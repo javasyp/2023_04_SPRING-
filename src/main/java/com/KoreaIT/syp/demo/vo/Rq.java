@@ -134,6 +134,11 @@ public class Rq {
 		print(Ut.jsReplace(msg, replaceUri));
 	}
 	
+	// 회원가입 후 원래 있었던 페이지로 이동
+	public String getJoinUri() {
+		return "../member/join?afterLoginUri=" + getAfterLoginUri();
+	}
+	
 	// 로그인 후 원래 가려고 했던 페이지로 이동
 	public String getLoginUri() {
 		return "../member/login?afterLoginUri=" + getAfterLoginUri();
@@ -173,5 +178,9 @@ public class Rq {
 	
 	public String getEncodedCurrentUri() {
 		return Ut.getEncodedCurrentUri(getCurrentUri());
+	}
+	
+	public String getArticleDetailUriFromArticleList(Article article) {
+		return "../article/detail?id=" + article.getId() + "&listUri=" + getEncodedCurrentUri();
 	}
 }
