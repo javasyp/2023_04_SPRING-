@@ -114,5 +114,14 @@ public class Ut {
 
 		return param;
 	}
+	
+	public static String getAttr(Map map, String attrName, String defaultValue) {
+		// map에 key(attrName) 있는지 확인
+		if (map.containsKey(attrName)) {
+			return (String) map.get(attrName);
+		}
+
+		return defaultValue;
+	}
 
 }

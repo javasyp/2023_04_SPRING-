@@ -138,6 +138,24 @@ public class Rq {
 	public String getLoginUri() {
 		return "../member/login?afterLoginUri=" + getAfterLoginUri();
 	}
+	
+	// 로그아웃 후 기존에 보고 있었던 페이지로 이동
+	public String getLogoutUri() {
+		String requestUri = req.getRequestURI();
+
+		switch (requestUri) {
+		case "/usr/article/write":
+			return "../member/doLogout?afterLogoutUri=" + "/";
+		}
+
+		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
+	}
+	
+	private String getAfterLogoutUri() {
+		// 로그아웃 후 접근 불가 페이지
+
+		return getEncodedCurrentUri();
+	}
 
 	private String getAfterLoginUri() {
 		// 로그인 후 접근 불가 페이지
@@ -147,28 +165,13 @@ public class Rq {
 		switch (requestUri) {
 		case "/usr/member/login":
 		case "/usr/member/join":
-			return Ut.getEncodedUri(paramMap.get("afterLoginUri"));
+			return Ut.getEncodedUri(Ut.getAttr(paramMap, "afterLoginUri", ""));
 		}
 
 		return getEncodedCurrentUri();
 	}
 	
-	// 로그아웃 후 기존에 보고 있었던 페이지로 이동
-	public String getLogoutUri() {
-		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
-	}
-
-	private String getAfterLogoutUri() {
-		
-		String requestUri = req.getRequestURI();
-		
-		return getEncodedCurrentUri();
-	}
-
 	public String getEncodedCurrentUri() {
 		return Ut.getEncodedCurrentUri(getCurrentUri());
 	}
-	
-	
-	
 }
