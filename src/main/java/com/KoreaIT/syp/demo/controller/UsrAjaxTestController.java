@@ -25,10 +25,10 @@ public class UsrAjaxTestController {
 		return sum + "/" + msg + "/S-1";
 	}
 	
-	@RequestMapping("usr/home/doPlusJson")
+	@RequestMapping("/usr/home/doPlusJson")
 	@ResponseBody
-	public Map doPlusJson(int num1, int num2) {
-		Map rs = new HashMap<String, Object>();
+	public Map<String, Object> doPlusJson(int num1, int num2) {
+		Map<String, Object> rs = new HashMap<>();
 
 		rs.put("rs", num1 + num2);
 		rs.put("msg", "더하기 성공!");

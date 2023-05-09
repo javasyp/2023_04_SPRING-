@@ -122,6 +122,24 @@ public class UsrMemberController {
 		return Ut.jsReplace(Ut.f("회원가입이 완료되었습니다."), afterJoinUri);
 	}
 	
+	// 아이디 중복 체크
+	@RequestMapping("/usr/member/getLoginIdDup")
+	@ResponseBody
+	public ResultData getLoginIdDup(String loginId) {
+		
+		if (Ut.empty(loginId)) {
+			return ResultData.from("F-1", "아이디를 입력해 주세요.");
+		}
+		
+		Member existsMember = memberService.getMemberByLoginId(loginId);
+		
+		if (existsMember != null) {
+			return ResultData.from("F-2", "해당 아이디는 이미 사용 중입니다.", "loginId", loginId);
+		}
+		
+		return ResultData.from("S-1", "사용 가능한 아이디입니다.", "loginId", loginId);
+	}
+	
 	// 마이페이지
 	@RequestMapping("/usr/member/myPage")
 	public String showMyPage() {

@@ -89,6 +89,7 @@
 			
 		}, 'html');
 	}
+	
 	function callByAjaxV5() {
 		var form = document.sum_form;
 		

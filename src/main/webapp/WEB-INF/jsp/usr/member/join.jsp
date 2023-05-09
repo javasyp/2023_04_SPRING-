@@ -7,6 +7,7 @@
 <!-- Join 폼 체크 -->
 <script>
 	let submitJoinFormDone = false;
+	let validLoginId = "";
 	
 	function submitJoinForm(form) {
 		if (submitJoinFormDone) {
@@ -18,6 +19,13 @@
 		
 		if (form.loginId.value == 0) {
 			alert('아이디를 입력해 주세요.');
+			return;
+		}
+		
+		// 아이디 중복일 경우
+		if (form.loginId.value != validLoginId) {
+			alert('사용할 수 없는 아이디입니다.');
+			form.loginId.focus();
 			return;
 		}
 		
@@ -73,6 +81,33 @@
 		
 		form.submit();
 	}
+	
+	// 아이디 중복 체크
+	function checkLoginIdDup(el) {
+		$('.checkDup-msg').empty();
+		const form = $(el).closest('form').get(0);
+		
+		if (form.loginId.value.length == 0) {
+			validLoginId = '';
+			return;
+		}
+		
+		$.get('../member/getLoginIdDup', {		// 전송 요청
+			isAjax : 'Y',		// ajax 명시
+			loginId : form.loginId.value
+			
+		}, function(data) {		// 전송 받음
+			
+			$('.checkDup-msg').html('<div class="mt-2">' + data.msg + '</div>')
+			// 예외 처리
+			if (data.success) {
+				validLoginId = data.data1;
+			} else {
+				validLoginId = '';
+			}
+		
+		}, 'json');
+	}
 </script>
 
 <section class="mt-8 text-xl">
@@ -89,43 +124,51 @@
 						<tr>
 							<td>아이디</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="아이디를 입력해 주세요." name="loginId" />
+								<input onkeyup="checkLoginIdDup(this);" class="input input-bordered w-full max-w-xs"
+									type="text" autocomplete="off" placeholder="아이디를 입력해 주세요." name="loginId" />
+								<div class="checkDup-msg"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>비밀번호</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="비밀번호를 입력해 주세요." name="loginPw" />
+								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
+									placeholder="비밀번호를 입력해 주세요." name="loginPw" />
 							</td>
 						</tr>
 						<tr>
 							<td>비밀번호 확인</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="비밀번호 확인을 입력해 주세요." name="loginPwConfirm" />
+								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
+									placeholder="비밀번호 확인을 입력해 주세요." name="loginPwConfirm" />
 							</td>
 						</tr>
 						<tr>
 							<td>이름</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="이름을 입력해 주세요." name="name" />
+								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
+									placeholder="이름을 입력해 주세요." name="name" />
 							</td>
 						</tr>
 						<tr>
 							<td>닉네임</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="닉네임을 입력해 주세요." name="nickname" />
+								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
+									placeholder="닉네임을 입력해 주세요." name="nickname" />
 							</td>
 						</tr>
 						<tr>
 							<td>전화번호</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="전화번호를 입력해 주세요." name="cellphoneNum" />
+								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
+									placeholder="전화번호를 입력해 주세요." name="cellphoneNum" />
 							</td>
 						</tr>
 						<tr>
 							<td>이메일</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="이메일을 입력해 주세요." name="email" />
+								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
+									placeholder="이메일을 입력해 주세요." name="email" />
 							</td>
 						</tr>
 						<tr>
