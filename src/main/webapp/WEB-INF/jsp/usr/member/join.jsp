@@ -106,11 +106,12 @@
 			
 		}, function(data) {		// 전송 받음
 			
-			$('.checkDup-msg').html('<p style="color:red;">' + data.msg + '</p>')
 			// 예외 처리
 			if (data.success) {
+				$('.checkDup-msg').html('<p style="color:blue;">' + data.msg + '</p>')
 				validLoginId = data.data1;
 			} else {
+				$('.checkDup-msg').html('<p style="color:red;">' + data.msg + '</p>')
 				validLoginId = '';
 			}
 		
