@@ -92,13 +92,17 @@
 			return;
 		}
 		
+		if (validLoginId == form.loginId.value) {	// 달라진 게 없을 때 (키보드 이벤트가 일어나도 요청 안함)
+			return;
+		}
+		
 		$.get('../member/getLoginIdDup', {		// 전송 요청
 			isAjax : 'Y',		// ajax 명시
 			loginId : form.loginId.value
 			
 		}, function(data) {		// 전송 받음
 			
-			$('.checkDup-msg').html('<div class="mt-2">' + data.msg + '</div>')
+			$('.checkDup-msg').html('<p style="color:red;">' + data.msg + '</p>')
 			// 예외 처리
 			if (data.success) {
 				validLoginId = data.data1;
