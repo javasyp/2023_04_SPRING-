@@ -4,6 +4,9 @@
 <%@ include file="../common/head.jspf"%>
 <hr />
 
+<!-- lodash debounce -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
 <!-- Join 폼 체크 -->
 <script>
 	let submitJoinFormDone = false;
@@ -92,7 +95,8 @@
 			return;
 		}
 		
-		if (validLoginId == form.loginId.value) {	// 달라진 게 없을 때 (키보드 이벤트가 일어나도 요청 안함)
+		// 달라진 게 없을 때 (키보드 이벤트가 일어나도 요청 안함)
+		if (validLoginId == form.loginId.value) {
 			return;
 		}
 		
@@ -112,6 +116,9 @@
 		
 		}, 'json');
 	}
+	
+	// lodash debounce
+	const checkLoginIdDupDebounced = _.debounce(checkLoginIdDup, 600);
 </script>
 
 <section class="mt-8 text-xl">
@@ -128,7 +135,7 @@
 						<tr>
 							<td>아이디</td>
 							<td>
-								<input onkeyup="checkLoginIdDup(this);" class="input input-bordered w-full max-w-xs"
+								<input onkeyup="checkLoginIdDupDebounced(this);" class="input input-bordered w-full max-w-xs"
 									type="text" autocomplete="off" placeholder="아이디를 입력해 주세요." name="loginId" />
 								<div class="checkDup-msg"></div>
 							</td>
