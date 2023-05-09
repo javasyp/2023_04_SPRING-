@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="API Test" />
+<c:set var="pageTitle" value="API Test2" />
 
 <script>
-	const API_KEY = 'yIGj7lJBJIcshuAYg2rAxIOkX81W14YthO8jdaPqMNOxbp52KQZaUPkf83%2Bs27TMVMLnNvSzzRoUmbAuju%2F30A%3D%3D';
+	const API_KEY = 'iSvQ7Vi3JSjHu%2Bn8GvolNyc7HAMHoPmx1dfWwe5LsjMacuyt%2B2GCHhwxhWagMkk81l6HdmyxwexsjZF75F4Dmw%3D%3D';
 	
 	async function getData() {
-		const url = 'http://apis.data.go.kr/1790387/covid19CurrentStatusKorea/covid19CurrentStatusKoreaJason?serviceKey='
+		const url = 'http://apis.data.go.kr/1180000/DaejeonNationalCemetery/Burialinfo042?name=홍길동&pageNo=1&numOfRows=50&serviceKey='
 				+ API_KEY;
 		// 끝날 때 까지 대기
 		const response = await fetch(url);
