@@ -83,6 +83,11 @@
 						</a>
 					</li>
 				</c:if>
+				<li class="hover:underline">
+					<a class="h-full px-3 flex items-center" href="/usr/home/ApiTest4">
+						<span>API</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 	</header>
