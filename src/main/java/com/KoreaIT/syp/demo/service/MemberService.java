@@ -32,8 +32,11 @@ public class MemberService {
 		if (existsMember != null) {
 			return ResultData.from("F-8", Ut.f("이미 사용 중인 이름(%s)과 이메일(%s)입니다.", name, email));
 		}
+		
+		// 저장 시 비밀번호 암호화하여 저장
+		loginPw = Ut.SHA256(loginPw);
 
-		// select문 실행
+		// DB 회원 저장
 		memberRepository.join(loginId, loginPw, name, nickname, cellphoneNum, email);
 
 		// 몇 번째 회원인지

@@ -70,6 +70,7 @@
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
 			<form action="../member/doModify" method="POST" onsubmit="MemberModify__submitForm(this); return false;">
+				<input type="hidden" name="loginId" value="${rq.loginedMember.loginId }" />
 				<table border="1">
 					<colgroup>
 						<col width="200" />
@@ -88,14 +89,14 @@
 							<td>새 비밀번호</td>
 							<td>
 								<input class="input input-bordered w-full max-w-xs" type="text" name="loginPw"
-									placeholder="새 비밀번호를 입력해 주세요." />
+									autocomplete="off" placeholder="새 비밀번호를 입력해 주세요." />
 							</td>
 						</tr>
 						<tr>
 							<td>새 비밀번호 확인</td>
 							<td>
 								<input class="input input-bordered w-full max-w-xs" type="text" name="loginPwConfirm"
-									placeholder="새 비밀번호 확인을 입력해 주세요." />
+									autocomplete="off" placeholder="새 비밀번호 확인을 입력해 주세요." />
 							</td>
 						</tr>
 						<tr>

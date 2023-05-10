@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.KoreaIT.syp.demo.service.MemberService;
 import com.KoreaIT.syp.demo.util.Ut;
-import com.KoreaIT.syp.demo.vo.Article;
 import com.KoreaIT.syp.demo.vo.Member;
 import com.KoreaIT.syp.demo.vo.ResultData;
 import com.KoreaIT.syp.demo.vo.Rq;
@@ -51,7 +50,9 @@ public class UsrMemberController {
 			return Ut.jsHistoryBack("F-3", Ut.f("%s은(는) 존재하지 않는 아이디입니다.", loginId));
 		}
 		
-		if (member.getLoginPw().equals(loginPw) == false) {
+		System.out.println(Ut.SHA256(loginPw));
+		
+		if (member.getLoginPw().equals(Ut.SHA256(loginPw)) == false) {
 			return Ut.jsHistoryBack("F-4", "비밀번호가 일치하지 않습니다.");
 		}
 		
@@ -157,14 +158,12 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doCheckPw")
 	@ResponseBody
 	public String doCheckPw(String loginPw, String replaceUri) {
-		System.out.println("========================================" + loginPw);
-		System.out.println("========================================" + replaceUri);
 		
 		if (Ut.empty(loginPw)) {
 			return rq.jsHistoryBackOnView("비밀번호를 입력하세요.");
 		}
 		
-		if (rq.getLoginedMember().getLoginPw().equals(loginPw) == false) {
+		if (rq.getLoginedMember().getLoginPw().equals(Ut.SHA256(loginPw)) == false) {
 			return rq.jsHistoryBack("F-1", "비밀번호가 일치하지 않습니다.");
 		}
 		
@@ -180,11 +179,16 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doModify")
 	@ResponseBody
-	public String doModify(String loginPw, String name, String nickname, String cellphoneNum, String email) {
-
-		if (Ut.empty(loginPw)) {
-			loginPw = null;
+	public String doModify(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if (Ut.empty(loginPw)) { // 비밀번호를 변경하지 않았을 경우
+			loginPw = member.getLoginPw();
+		} else {	// 변경했을 경우
+			loginPw = Ut.SHA256(loginPw);
 		}
+			
 		if (Ut.empty(name)) {
 			return rq.jsHistoryBackOnView("이름을 입력해 주세요.");
 		}
