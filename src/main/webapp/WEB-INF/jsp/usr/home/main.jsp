@@ -8,7 +8,7 @@
 	Vero maiores tempore reprehenderit perferendis et esse laborum cum quia consequuntur laudantium fugiat commodi rem
 	quasi recusandae.
 </div>
-<div class="popup text-2xl">Popup Test</div>
+<div class="popup text-2xl inline">Popup Test</div>
 <div class="layer-bg"></div>
 <div class="layer">
 	<div class="flex justify-between">
