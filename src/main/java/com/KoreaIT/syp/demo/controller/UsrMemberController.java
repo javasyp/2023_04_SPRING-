@@ -89,25 +89,6 @@ public class UsrMemberController {
 	public String doJoin(String loginId, String loginPw, String name, String nickname,
 			String cellphoneNum, String email, @RequestParam(defaultValue = "/") String afterLoginUri) {
 
-		if (Ut.empty(loginId)) {
-			return rq.jsHistoryBack("F-1", "아이디를 입력해 주세요.");
-		}
-		if (Ut.empty(loginPw)) {
-			return rq.jsHistoryBack("F-2", "비밀번호를 입력해 주세요.");
-		}
-		if (Ut.empty(name)) {
-			return rq.jsHistoryBack("F-3", "이름을 입력해 주세요.");
-		}
-		if (Ut.empty(nickname)) {
-			return rq.jsHistoryBack("F-4", "닉네임을 입력해 주세요.");
-		}
-		if (Ut.empty(cellphoneNum)) {
-			return rq.jsHistoryBack("F-5", "전화번호를 입력해 주세요.");
-		}
-		if (Ut.empty(email)) {
-			return rq.jsHistoryBack("F-6", "이메일을 입력해 주세요.");
-		}
-
 		ResultData<Integer> joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNum, email);
 
 		// 중복일 때
@@ -170,7 +151,7 @@ public class UsrMemberController {
 		return rq.jsReplace("", replaceUri);
 	}
 	
-	// 수정
+	// 회원정보 수정
 	@RequestMapping("/usr/member/modify")
 	public String showModify() {
 		
@@ -188,23 +169,30 @@ public class UsrMemberController {
 		} else {	// 변경했을 경우
 			loginPw = Ut.SHA256(loginPw);
 		}
-			
-		if (Ut.empty(name)) {
-			return rq.jsHistoryBackOnView("이름을 입력해 주세요.");
-		}
-		if (Ut.empty(nickname)) {
-			return rq.jsHistoryBackOnView("닉네임을 입력해 주세요.");
-		}
-		if (Ut.empty(cellphoneNum)) {
-			return rq.jsHistoryBackOnView("전화번호를 입력해 주세요.");
-		}
-		if (Ut.empty(email)) {
-			return rq.jsHistoryBackOnView("이메일을 입력해 주세요.");
-		}
-
+		
 		ResultData modifyRd = memberService.modify(rq.getLoginedMemberId(), loginPw, name, nickname, cellphoneNum,
 				email);
 
 		return rq.jsReplace(modifyRd.getMsg(), "../member/myPage");
+	}
+	
+	// 아이디 찾기
+	@RequestMapping("/usr/member/findLoginId")
+	public String showFindLoginId() {
+		
+		return "usr/member/findLoginId";
+	}
+	
+	@RequestMapping("/usr/member/doFindLoginId")
+	@ResponseBody
+	public String doFindLoginId(String name, String email, @RequestParam(defaultValue = "/") String afterFindLoginIdUri) {
+		
+		Member member = memberService.getMemberByNameAndEmail(name, email);
+		
+		if (member == null) {
+			return rq.jsHistoryBack("F-1", "해당하는 사용자가 없습니다.");
+		}
+		
+		return Ut.jsReplace(Ut.f("당신의 아이디는 ( %s )입니다.", member.getLoginId()), afterFindLoginIdUri);
 	}
 }

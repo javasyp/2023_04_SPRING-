@@ -46,7 +46,8 @@ public class MemberService {
 	}
 
 	// 이름 + 이메일 중복 체크
-	private Member getMemberByNameAndEmail(String name, String email) {
+	// 아이디 찾기
+	public Member getMemberByNameAndEmail(String name, String email) {
 		return memberRepository.getMemberByNameAndEmail(name, email);
 	}
 
@@ -65,5 +66,4 @@ public class MemberService {
 		
 		return ResultData.from("S-1", "회원 정보 수정이 완료되었습니다.");
 	}
-
 }

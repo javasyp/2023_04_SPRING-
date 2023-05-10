@@ -183,4 +183,22 @@ public class Rq {
 	public String getArticleDetailUriFromArticleList(Article article) {
 		return "../article/detail?id=" + article.getId() + "&listUri=" + getEncodedCurrentUri();
 	}
+	
+	// 아이디 찾기 후 원래 페이지
+	public String getFindLoginIdUri() {
+		return "../member/findLoginId?afterFindLoginIdUri=" + getAfterFindLoginIdUri();
+	}
+
+	private String getAfterFindLoginIdUri() {
+		return getEncodedCurrentUri();
+	}
+	
+	// 비밀번호 찾기 후 원래 페이지
+	public String getFindLoginPwUri() {
+		return "../member/findLoginPw?afterFindLoginPwUri=" + getAfterFindLoginPwUri();
+	}
+
+	private String getAfterFindLoginPwUri() {
+		return getEncodedCurrentUri();
+	}
 }
