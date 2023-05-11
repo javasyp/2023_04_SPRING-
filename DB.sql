@@ -59,7 +59,7 @@ loginPw = 'admin',
 `name` = '관리자',
 nickname = '관리자',
 cellphoneNum = '01012341234',
-email = 'abcdef@gmail.com';
+email = 'backendsy@gmail.com';
 
 # 회원 테스트 데이터 생성 (일반)
 INSERT INTO `member` 
@@ -70,7 +70,7 @@ loginPw = 'test1',
 `name` = '회원1',
 nickname = '회원1',
 cellphoneNum = '01043214321',
-email = 'abcd@gmail.com';
+email = 'backendsy@gmail.com';
 
 INSERT INTO `member` 
 SET regDate = NOW(),
@@ -80,7 +80,7 @@ loginPw = 'test2',
 `name` = '회원2',
 nickname = '회원2',
 cellphoneNum = '01067896789',
-email = 'zxcv@gmail.com';
+email = 'backendsy@gmail.com';
 
 # 게시물 테이블 구조 변경 - memberId 추가
 ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER updateDate;
@@ -277,7 +277,7 @@ SELECT * FROM board;
 SELECT * FROM reactionPoint;
 SELECT * FROM reply;
 
-SELECT SHA2('hello', 256);
+SELECT SHA2('v8wq0q', 256);
 
 SELECT R.*, M.nickname AS extra__writer
 FROM reply AS R

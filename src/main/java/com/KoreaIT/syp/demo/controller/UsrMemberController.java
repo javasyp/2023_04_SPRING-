@@ -190,9 +190,37 @@ public class UsrMemberController {
 		Member member = memberService.getMemberByNameAndEmail(name, email);
 		
 		if (member == null) {
-			return rq.jsHistoryBack("F-1", "해당하는 사용자가 없습니다.");
+			return Ut.jsHistoryBack("F-1", "해당하는 사용자가 없습니다.");
 		}
 		
-		return Ut.jsReplace(Ut.f("당신의 아이디는 ( %s )입니다.", member.getLoginId()), afterFindLoginIdUri);
+		return Ut.jsReplace("S-1", Ut.f("당신의 아이디는 ( %s )입니다.", member.getLoginId()), afterFindLoginIdUri);
+	}
+	
+	// 비밀번호 찾기
+	@RequestMapping("/usr/member/findLoginPw")
+	public String showFindLoginPw() {
+		
+		return "usr/member/findLoginPw";
+	}
+	
+	@RequestMapping("/usr/member/doFindLoginPw")
+	@ResponseBody
+	public String doFindLoginPw(String loginId, String email, @RequestParam(defaultValue = "/") String afterFindLoginPwUri) {
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if (member == null) {
+			return Ut.jsHistoryBack("F-1", "해당하는 사용자가 없습니다.");
+		}
+		
+		if (member.getEmail().equals(email) == false) {
+			return Ut.jsHistoryBack("F-2", "이메일이 일치하지 않습니다.");
+		}
+		
+		// 임시 비밀번호를 메일로 보내기
+		ResultData notifyTempLoginPwByEmailRd = memberService.notifyTempLoginPwByEmail(member);
+		
+		return Ut.jsReplace(notifyTempLoginPwByEmailRd.getResultCode(), notifyTempLoginPwByEmailRd.getMsg(),
+				afterFindLoginPwUri);
 	}
 }

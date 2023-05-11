@@ -1,5 +1,6 @@
 package com.KoreaIT.syp.demo.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.KoreaIT.syp.demo.repository.MemberRepository;
@@ -9,10 +10,18 @@ import com.KoreaIT.syp.demo.vo.ResultData;
 
 @Service
 public class MemberService {
+	
+	@Value("${custom.siteMainUri}")
+	private String siteMainUri;
+	@Value("${custom.siteName}")
+	private String siteName;
+	
 	private MemberRepository memberRepository;
+	private MailService mailService;
 
-	public MemberService(MemberRepository memberRepository) {
+	public MemberService(MailService mailService, MemberRepository memberRepository) {
 		this.memberRepository = memberRepository;
+		this.mailService = mailService;
 	}
 
 	// 서비스 메서드
@@ -65,5 +74,31 @@ public class MemberService {
 		memberRepository.modify(id, loginPw, name, nickname, cellphoneNum, email);
 		
 		return ResultData.from("S-1", "회원 정보 수정이 완료되었습니다.");
+	}
+	
+	// 비밀번호 찾기 (이메일 전송) 임시 패스워드 발송과 동시에 DB에 있는 비밀번호를 임시 비밀번호로 변경
+	public ResultData notifyTempLoginPwByEmail(Member actor) {
+		// 메일 제목과 내용
+		String title = "[" + siteName + "] 임시 패스워드 발송";
+		String tempPassword = Ut.getTempPassword(6);	// 랜덤 6글자
+		String body = "<h1>임시 패스워드 : " + tempPassword + "</h1>";
+		body += "<a href=\"" + siteMainUri + "/usr/member/login\" target=\"_blank\">로그인 하러가기</a>";
+		
+		// 메일 전송
+		ResultData sendResultData = mailService.send(actor.getEmail(), title, body);
+
+		if (sendResultData.isFail()) {
+			return sendResultData;
+		}
+		
+		// 기존 비밀번호를 임시 비밀번호로 변경
+		setTempPassword(actor, tempPassword);
+
+		return ResultData.from("S-1", "계정의 이메일 주소로 임시 패스워드가 발송되었습니다.");
+	}
+	
+	// 임시 비밀번호로 변경
+	private void setTempPassword(Member actor, String tempPassword) {
+		memberRepository.modify(actor.getId(), Ut.SHA256(tempPassword), null, null, null, null);
 	}
 }

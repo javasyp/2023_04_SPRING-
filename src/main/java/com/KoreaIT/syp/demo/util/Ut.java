@@ -64,15 +64,36 @@ public class Ut {
 		}
 		
 		return Ut.f("""
-				<script>
-					const msg = '%s'.trim();
-					if (msg.length > 0) {
-						alert(msg);
-					}
-					location.replace('%s');
-				</script>
-				""", msg, uri);
+					<script>
+						const msg = '%s'.trim();
+						if (msg.length > 0) {
+							alert(msg);
+						}
+						location.replace('%s');
+					</script>
+					""", msg, uri);
 	}
+	
+	public static String jsReplace(String resultCode, String msg, String uri) {
+		if (msg == null) {
+			msg = "";
+		}
+		
+		if (uri == null) {
+			uri = "/";
+		}
+
+		return Ut.f("""
+					<script>
+						const msg = '%s'.trim();
+						if ( msg.length > 0 ){
+							alert(msg);
+						}
+						location.replace('%s');
+					</script>
+					""", msg, uri);
+	}
+
 	
 	public static String jsHitoryBackOnView(HttpServletRequest req, String msg) {
 		req.setAttribute("msg", msg);
@@ -145,6 +166,22 @@ public class Ut {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	// 임시 비밀번호 생성
+	public static String getTempPassword(int length) {
+		int index = 0;
+		char[] charArr = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+				'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+		StringBuffer sb = new StringBuffer();
+
+		for (int i = 0; i < length; i++) {
+			index = (int) (charArr.length * Math.random());	// 난수 발생
+			sb.append(charArr[index]);
+		}
+
+		return sb.toString();	// 문자열로 반환
 	}
 
 }
