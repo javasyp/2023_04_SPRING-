@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.KoreaIT.syp.demo.interceptor.BeforeActionInterceptor;
+import com.KoreaIT.syp.demo.interceptor.NeedAdminInterceptor;
 import com.KoreaIT.syp.demo.interceptor.NeedLoginInterceptor;
 import com.KoreaIT.syp.demo.interceptor.NeedLogoutInterceptor;
 
@@ -23,6 +24,10 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 	// NeedLogoutInterceptor 불러오기 (로그아웃 상태에서 가능한 기능)
 	@Autowired
 	NeedLogoutInterceptor needLogoutInterceptor;
+	
+	// NeedLogoutInterceptor 불러오기 (관리자만 가능)
+	@Autowired
+	NeedAdminInterceptor needAdminInterceptor;
 	
 	// /resource/common.css
 	// 인터셉트 적용
@@ -59,6 +64,14 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/usr/reactionPoint/doCancelGoodReaction");
 		ir.addPathPatterns("/usr/reactionPoint/doCancelBadReaction");
 		
+		ir.addPathPatterns("/adm/**");
+		ir.addPathPatterns("/adm/member/login");
+		ir.addPathPatterns("/adm/member/doLogin");
+		ir.addPathPatterns("/adm/member/findLoginId");
+		ir.addPathPatterns("/adm/member/doFindLoginId");
+		ir.addPathPatterns("/adm/member/findLoginPw");
+		ir.addPathPatterns("/adm/member/doFindLoginPw");
+		
 		// 로그아웃 필요
 		ir = registry.addInterceptor(needLogoutInterceptor);
 		ir.addPathPatterns("/usr/member/login");
@@ -70,5 +83,14 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/usr/member/doFindLoginId");
 		ir.addPathPatterns("/usr/member/findLoginPw");
 		ir.addPathPatterns("/usr/member/doFindLoginPw");
+		
+		ir = registry.addInterceptor(needAdminInterceptor);
+		ir.addPathPatterns("/adm/**");
+		ir.addPathPatterns("/adm/member/login");
+		ir.addPathPatterns("/adm/member/doLogin");
+		ir.addPathPatterns("/adm/member/findLoginId");
+		ir.addPathPatterns("/adm/member/doFindLoginId");
+		ir.addPathPatterns("/adm/member/findLoginPw");
+		ir.addPathPatterns("/adm/member/doFindLoginPw");
 	}
 }

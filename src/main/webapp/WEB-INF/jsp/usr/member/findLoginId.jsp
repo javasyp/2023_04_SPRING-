@@ -51,14 +51,14 @@
 							<td>이름</td>
 							<td>
 								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
-									placeholder="이름을 입력해 주세요." name="name" required/>
+									placeholder="이름을 입력해 주세요." name="name" />
 							</td>
 						</tr>
 						<tr>
 							<td>이메일</td>
 							<td>
 								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
-									placeholder="이메일을 입력해 주세요." name="email" required/>
+									placeholder="이메일을 입력해 주세요." name="email" />
 							</td>
 						</tr>
 						<tr>

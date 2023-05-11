@@ -21,6 +21,8 @@ import lombok.Getter;
 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Rq {
 	@Getter
+	boolean isAjax;
+	@Getter
 	private boolean isLogined;
 	@Getter
 	private int loginedMemberId;
@@ -56,6 +58,26 @@ public class Rq {
 		this.loginedMember = loginedMember;
 		
 		this.req.setAttribute("rq", this);
+		
+		String requestUri = req.getRequestURI();
+		
+		boolean isAjax = requestUri.endsWith("Ajax");
+
+		if (isAjax == false) {
+			if (paramMap.containsKey("ajax") && paramMap.get("ajax").equals("Y")) {
+				isAjax = true;
+			} else if (paramMap.containsKey("isAjax") && paramMap.get("isAjax").equals("Y")) {
+				isAjax = true;
+			}
+		}
+		
+		if (isAjax == false) {
+			if (requestUri.contains("/get")) {
+				isAjax = true;
+			}
+		}
+		
+		this.isAjax = isAjax;
 	}
 	
 	public void printHistoryBackJs(String msg) throws IOException {
@@ -136,12 +158,12 @@ public class Rq {
 	
 	// 회원가입 후 원래 있었던 페이지로 이동
 	public String getJoinUri() {
-		return "../member/join?afterLoginUri=" + getAfterLoginUri();
+		return "/usr/member/join?afterLoginUri=" + getAfterLoginUri();
 	}
 	
 	// 로그인 후 원래 가려고 했던 페이지로 이동
 	public String getLoginUri() {
-		return "../member/login?afterLoginUri=" + getAfterLoginUri();
+		return "/usr/member/login?afterLoginUri=" + getAfterLoginUri();
 	}
 	
 	// 로그아웃 후 기존에 보고 있었던 페이지로 이동
@@ -151,18 +173,20 @@ public class Rq {
 		switch (requestUri) {
 		case "/usr/article/write":
 			return "../member/doLogout?afterLogoutUri=" + "/";
+		case "/adm/memberAndArticle/list":
+			return "../member/doLogout?afterLogoutUri=" + "/";
 		}
 
-		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
+		return "/usr/member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
 	}
 	
-	private String getAfterLogoutUri() {
+	public String getAfterLogoutUri() {
 		// 로그아웃 후 접근 불가 페이지
 
 		return getEncodedCurrentUri();
 	}
 
-	private String getAfterLoginUri() {
+	public String getAfterLoginUri() {
 		// 로그인 후 접근 불가 페이지
 
 		String requestUri = req.getRequestURI();
@@ -181,12 +205,12 @@ public class Rq {
 	}
 	
 	public String getArticleDetailUriFromArticleList(Article article) {
-		return "../article/detail?id=" + article.getId() + "&listUri=" + getEncodedCurrentUri();
+		return "/usr/article/detail?id=" + article.getId() + "&listUri=" + getEncodedCurrentUri();
 	}
 	
 	// 아이디 찾기 후 원래 페이지
 	public String getFindLoginIdUri() {
-		return "../member/findLoginId?afterFindLoginIdUri=" + getAfterFindLoginIdUri();
+		return "/usr/member/findLoginId?afterFindLoginIdUri=" + getAfterFindLoginIdUri();
 	}
 
 	private String getAfterFindLoginIdUri() {
@@ -195,10 +219,19 @@ public class Rq {
 	
 	// 비밀번호 찾기 후 원래 페이지
 	public String getFindLoginPwUri() {
-		return "../member/findLoginPw?afterFindLoginPwUri=" + getAfterFindLoginPwUri();
+		return "/usr/member/findLoginPw?afterFindLoginPwUri=" + getAfterFindLoginPwUri();
 	}
 
 	private String getAfterFindLoginPwUri() {
 		return getEncodedCurrentUri();
+	}
+	
+	// 관리자인지 확인
+	public boolean isAdmin() {
+		if (isLogined == false) {
+			return false;
+		}
+
+		return loginedMember.isAdmin();
 	}
 }

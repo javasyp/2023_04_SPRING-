@@ -17,7 +17,7 @@
 		memberLoginId = form.loginId.value.trim();
 		
 		if (memberLoginId.length == 0) {
-			alert('이름을 입력하세요.');
+			alert('아이디를 입력하세요.');
 			form.loginId.focus();
 			return;
 		}
@@ -51,14 +51,14 @@
 							<td>아이디</td>
 							<td>
 								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
-									placeholder="아이디를 입력해 주세요." name="loginId" required/>
+									placeholder="아이디를 입력해 주세요." name="loginId" />
 							</td>
 						</tr>
 						<tr>
 							<td>이메일</td>
 							<td>
 								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
-									placeholder="이메일을 입력해 주세요." name="email" required/>
+									placeholder="이메일을 입력해 주세요." name="email" />
 							</td>
 						</tr>
 						<tr>

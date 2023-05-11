@@ -1,5 +1,7 @@
 package com.KoreaIT.syp.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -100,5 +102,20 @@ public class MemberService {
 	// 임시 비밀번호로 변경
 	private void setTempPassword(Member actor, String tempPassword) {
 		memberRepository.modify(actor.getId(), Ut.SHA256(tempPassword), null, null, null, null);
+	}
+
+	public int getMembersCount(String authLevel, String searchType, String searchKeyword) {
+		return memberRepository.getMembersCount(authLevel, searchType, searchKeyword);
+	}
+
+	public List<Member> getForPrintMembers(String authLevel, int itemsInAPage, int page, String searchType,
+			String searchKeyword) {
+
+		int limitStart = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+		List<Member> members = memberRepository.getForPrintMembers(authLevel, searchType, searchKeyword,
+				limitStart, limitTake);
+
+		return members;
 	}
 }
